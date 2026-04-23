@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Works long</h1>
+
+{% for item in jobs %}
+<h2># {{ item.id }}</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Title of activity</th>
+            <th>Team leader</th>
+            <th>Duration</th>
+            <th>List of collaborators</th>
+            <th>Is finished</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ item.job }}</td>
+            <td>{{ item.user.surname }} {{ item.user.name }}</td>
+            <td>{{ item.work_size }}</td>
+            <td>{{ item.collaborators }}</td>
+            <td>
+                {% if item.is_finished %}
+                    <span>Is finished</span>
+                {% else %}
+                    <span>Is not finished</span>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% if current_user.is_authenticated and current_user.id == item.team_leader %}
+    <div style="margin: 10px 0;">
+        <a href="/news/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/news_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+{% endif %}
+
+<hr>
+{% endfor %}
+
+{% endblock %}
